@@ -1,3 +1,6 @@
+networks:
+  red_apple:
+    external: true
 version: '3'
 services:
   db:
@@ -5,22 +8,24 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+      POSTGRES_DB: inventario
     ports:
       - "5432:5432"
-
+    networks:
+      - red_apple
   server:
-    build:
-      context: ./server
+    image: backend-apple-docker
     ports:
-      - "5000:5000"
+    "4000:4000"
     depends_on:
       - db
-
+    networks:
+      - red_apple
   client:
-    build:
-      context: ./client
+    image: frontend-apple-docker
     ports:
-      - "3000:3000"
+      "81:81"
     depends_on:
       - server
+    networks:
+      - red_apple

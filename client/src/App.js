@@ -18,6 +18,7 @@ import Menu from "./components/Navbar";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
 import Welcome from "./pages/Welcome";
+import AllItems from "./components/AllItems";
 import { Container } from "@mui/material";
 
 function AppRoutes() {
@@ -59,6 +60,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute user={user}>
             <IPhoneList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/allitems"
+        element={
+          <ProtectedRoute user={user}>
+            <AllItems />
           </ProtectedRoute>
         }
       />

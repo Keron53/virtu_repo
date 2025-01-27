@@ -24,6 +24,68 @@ const createIPhone = async (req, res, next) => {
     }
 }
 
+const getAll = async (req, res, next) => {
+    try {
+        const query = `
+            SELECT 
+                'IPhone' AS tipo_dispositivo,
+                m.nombre_modelo AS modelo,
+                i.imei AS identificador,
+                i.vendido
+            FROM IPhone i
+            JOIN Modelo m ON i.id_modelo = m.id_modelo
+
+            UNION ALL
+
+            SELECT 
+                'IPhone_usado' AS tipo_dispositivo,
+                m.nombre_modelo AS modelo,
+                iu.imei AS identificador,
+                iu.vendido
+            FROM IPhone_usado iu
+            JOIN Modelo m ON iu.id_modelo = m.id_modelo
+
+            UNION ALL
+
+            SELECT 
+                'IPad' AS tipo_dispositivo,
+                m.nombre_modelo AS modelo,
+                COALESCE(ip.imei, ip.num_modelo) AS identificador,
+                ip.vendido
+            FROM IPad ip
+            JOIN Modelo m ON ip.id_modelo = m.id_modelo
+
+            UNION ALL
+
+            SELECT 
+                'MacBook' AS tipo_dispositivo,
+                m.nombre_modelo AS modelo,
+                mb.serial_num AS identificador,
+                mb.vendido
+            FROM MacBook mb
+            JOIN Modelo m ON mb.id_modelo = m.id_modelo
+
+            UNION ALL
+
+            SELECT 
+                'AppleWatch' AS tipo_dispositivo,
+                m.nombre_modelo AS modelo,
+                aw.serial_num AS identificador,
+                aw.vendido
+            FROM AppleWatch aw
+            JOIN Modelo m ON aw.id_modelo = m.id_modelo
+        `;
+
+        // Ejecuta la consulta y obtiene todos los datos
+        const result = await pool.query(query);
+
+        res.json(result.rows); // Devuelve los datos en formato JSON
+    } catch (error) {
+        next(error); // Manejo de errores
+    }
+};
+
+
 const getAllIPhone = async (req, res, next) => {
     try {
         const allIPhone = await pool.query("SELECT * FROM IPhone ORDER BY id_iphone DESC");
@@ -142,6 +204,7 @@ const deleteIPhone = async (req, res, next) => {
 
 module.exports = {
     createIPhone,
+    getAll,
     getAllIPhone,
     getIPhone,
     getIPhoneByModel,

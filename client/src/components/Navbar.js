@@ -27,7 +27,10 @@ export default function Navbar() {
       <AppBar position="static" color="transparent">
         <Container>
           <Toolbar>
-            <Typography sx={{ flexGrow: 1 }}>
+          <Typography
+              sx={{ flexGrow: 1, cursor: "pointer" }}
+              onClick={() => navigate("/allitems")}
+            >
               INVENTARIO APPLE
             </Typography>
             {/* Mostrar botones solo si hay un usuario logueado */}

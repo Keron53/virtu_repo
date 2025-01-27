@@ -12,7 +12,7 @@ export default function Welcome() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#f5f5f5", // Color de fondo suave
+        backgroundColor: "#f5f5f5",
         textAlign: "center",
         padding: 2,
       }}

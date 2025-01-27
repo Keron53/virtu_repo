@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { 
-    createIPhone, 
+    createIPhone,
+    getAll,
     getAllIPhone, 
     getIPhone, 
     getIPhoneByModel,
@@ -15,6 +16,8 @@ const verifyToken = require('../middlewares/verifyToken');
 const checkRole = require('../middlewares/checkRole');
 
 const router = Router();
+
+router.post('/getall', verifyToken, checkRole(['admin', 'operador']), getAll);
 
 router.post('/iphone/post', verifyToken, checkRole(['admin']), createIPhone);
 
