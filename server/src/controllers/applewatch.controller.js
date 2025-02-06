@@ -38,48 +38,6 @@ const getAppleWatch = async (req, res, next) => {
     }
 }
 
-const getAppleWatchByModel = async (req, res, next) => {
-    try {
-        const { id_modelo } = req.params;
-        const result = await pool.query("SELECT * FROM AppleWatch WHERE id_modelo = $1 ORDER BY id_applewatch DESC", [id_modelo]);
-
-        if (result.rows.length === 0)
-            return res.status(404).json({ message: "No Apple Watches found with the specified model ID" });
-
-        res.json(result.rows);
-    } catch (error) {
-        next(error);
-    }
-}
-
-const getAppleWatchBySerial = async (req, res, next) => {
-    try {
-        const { serial_num } = req.params;
-        const result = await pool.query("SELECT * FROM AppleWatch WHERE serial_num = $1", [serial_num]);
-
-        if (result.rows.length === 0)
-            return res.status(404).json({ message: "No Apple Watch found with the specified serial number" });
-
-        res.json(result.rows[0]);
-    } catch (error) {
-        next(error);
-    }
-}
-
-const getAppleWatchByColor = async (req, res, next) => {
-    try {
-        const { color } = req.params;
-        const result = await pool.query("SELECT * FROM AppleWatch WHERE color ILIKE $1 ORDER BY id_applewatch DESC", [`%${color}%`]);
-
-        if (result.rows.length === 0)
-            return res.status(404).json({ message: "No Apple Watches found with the specified color" });
-
-        res.json(result.rows);
-    } catch (error) {
-        next(error);
-    }
-}
-
 const getAppleWatchesNotSold = async (req, res, next) => {
     try {
         const result = await pool.query("SELECT * FROM AppleWatch WHERE vendido = false ORDER BY id_applewatch DESC");
@@ -135,9 +93,6 @@ module.exports = {
     createAppleWatch,
     getAllAppleWatches,
     getAppleWatch,
-    getAppleWatchByModel,
-    getAppleWatchBySerial,
-    getAppleWatchByColor,
     getAppleWatchesNotSold,
     getAppleWatchesSold,
     updateAppleWatch,

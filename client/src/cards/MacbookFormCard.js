@@ -32,7 +32,8 @@ import {
             <FormControl fullWidth variant="filled" sx={{ margin: ".5rem 0" }}>
               <InputLabel>ID Modelo</InputLabel>
               <Select name="id_modelo" value={macbook.id_modelo} onChange={handleChange}>
-                {modelos.map((modelo) => (
+                {modelos.filter((modelo) => modelo.nombre_modelo.startsWith("MACBOOK"))
+                .map((modelo) => (
                   <MenuItem key={modelo.id_modelo} value={modelo.id_modelo}>
                     {modelo.nombre_modelo}
                   </MenuItem>

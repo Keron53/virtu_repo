@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import IPhoneUsedListCard from "../cards/IPhoneUsedListCard";
 
@@ -16,13 +16,12 @@ export default function IPhoneUsedList() {
   const [modelos, setModelos] = useState([]);
   const navigate = useNavigate();
 
-  // Función para obtener el token del localStorage
   const getToken = () => localStorage.getItem("token");
 
   const loadIphonesUsados = async (filter) => {
     const response = await fetch(`http://localhost:4000/iphoneused/${filter}`, {
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     if (response.ok) {
@@ -36,7 +35,7 @@ export default function IPhoneUsedList() {
   const loadModelos = async () => {
     const response = await fetch("http://localhost:4000/modelo/get", {
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     if (response.ok) {
@@ -51,7 +50,7 @@ export default function IPhoneUsedList() {
     await fetch(`http://localhost:4000/iphoneused/delete/${id}`, { 
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     setIphonesUsados(iphonesUsados.filter((iphone) => iphone.id_iphone_usado !== id));
@@ -70,7 +69,7 @@ export default function IPhoneUsedList() {
       method: "PUT",
       headers: { 
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       },
       body: JSON.stringify(updatedIphone),
     });
@@ -85,24 +84,53 @@ export default function IPhoneUsedList() {
 
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <h1>Lista de iPhones Usados</h1>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{
+          mb: 2,
+          p: 2,
+          borderRadius: "16px",
+          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease-in-out",
+        }}
+      >
+        <h1 style={{ fontFamily: "SF Pro Display, Inter, sans-serif", fontSize: "24px" }}>
+          Lista de iPhones Usados
+        </h1>
         <Box display="flex" gap={1}>
-          <Button variant="contained" color="success" onClick={() => navigate('/iphoneused/new')}>
-            Agregar iPhone
-          </Button>
-          <Button variant="contained" color="warning" onClick={() => navigate('/iphone')}>
-            Regresar
-          </Button>
-          <Button variant="contained" onClick={() => loadIphonesUsados('sold')}>
-            Vendidos
-          </Button>
-          <Button variant="contained" onClick={() => loadIphonesUsados('notsold')}>
-            No vendidos
-          </Button>
-          <Button variant="contained" onClick={() => loadIphonesUsados('get')}>
-            Todos los equipos
-          </Button>
+          {[
+            { label: "Agregar iPhone", color: "success", action: () => navigate('/iphoneused/new') },
+            { label: "Regresar", color: "warning", action: () => navigate('/iphone') },
+            { label: "Vendidos", color: "primary", action: () => loadIphonesUsados('sold') },
+            { label: "No vendidos", color: "primary", action: () => loadIphonesUsados('notsold') },
+            { label: "Todos los equipos", color: "secondary", action: () => loadIphonesUsados('get') }
+          ].map((btn, index) => (
+            <Button
+              key={index}
+              variant="contained"
+              color={btn.color}
+              onClick={btn.action}
+              sx={{
+                borderRadius: "12px",
+                textTransform: "none",
+                fontSize: "16px",
+                fontFamily: "SF Pro Display, Inter, sans-serif",
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  background: "rgba(255, 255, 255, 0.6)",
+                  boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.2)",
+                },
+                "&:active": {
+                  transform: "scale(0.95)",
+                },
+              }}
+            >
+              {btn.label}
+            </Button>
+          ))}
         </Box>
       </Box>
       {iphonesUsados.map((iphone) => {

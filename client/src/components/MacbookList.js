@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MacBookListCard from "../cards/MacbookListCard";
 
@@ -16,15 +16,15 @@ const images = importAll(require.context('../images', false, /\.(png|jpe?g|svg)$
 export default function MacbookList() {
   const [macbooks, setMacBooks] = useState([]);
   const [modelos, setModelos] = useState([]);
+  const [clicked, setClicked] = useState(null);
   const navigate = useNavigate();
 
-  // Función para obtener el token del localStorage
   const getToken = () => localStorage.getItem("token");
 
   const loadMacBooks = async (filter) => {
     const response = await fetch(`http://localhost:4000/macbook/${filter}`, {
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     if (response.ok) {
@@ -38,7 +38,7 @@ export default function MacbookList() {
   const loadModelos = async () => {
     const response = await fetch("http://localhost:4000/modelo/get", {
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     if (response.ok) {
@@ -53,7 +53,7 @@ export default function MacbookList() {
     await fetch(`http://localhost:4000/macbook/delete/${id}`, { 
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     setMacBooks(macbooks.filter((macbook) => macbook.id_macbook !== id));
@@ -72,7 +72,7 @@ export default function MacbookList() {
       method: "PUT",
       headers: { 
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       },
       body: JSON.stringify(updatedMacBook),
     });
@@ -87,21 +87,54 @@ export default function MacbookList() {
 
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <h1>Lista de MacBooks</h1>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{
+          mb: 2,
+          p: 2,
+          borderRadius: "16px",
+          backdropFilter: "blur(10px)",
+          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease-in-out",
+        }}
+      >
+        <h1 style={{ fontFamily: "SF Pro Display, Inter, sans-serif", fontSize: "24px" }}>
+          Lista de MacBooks
+        </h1>
         <Box display="flex" gap={1}>
-          <Button variant="contained" color="success" onClick={() => navigate('/macbook/new')}>
-            Agregar MacBook
-          </Button>
-          <Button variant="contained" onClick={() => loadMacBooks('sold')}>
-            Vendidos
-          </Button>
-          <Button variant="contained" onClick={() => loadMacBooks('notsold')}>
-            No vendidos
-          </Button>
-          <Button variant="contained" onClick={() => loadMacBooks('get')}>
-            Todos los equipos
-          </Button>
+          {[
+            { label: "Agregar MacBook", color: "success", action: () => navigate('/macbook/new') },
+            { label: "Vendidos", color: "primary", action: () => loadMacBooks('sold') },
+            { label: "No vendidos", color: "primary", action: () => loadMacBooks('notsold') },
+            { label: "Todos los equipos", color: "secondary", action: () => loadMacBooks('get') }
+          ].map((btn, index) => (
+            <Button
+            key={index}
+            variant="contained"
+            color={btn.color}
+            onClick={() => {
+              setClicked(index);
+              btn.action();
+              setTimeout(() => setClicked(null), 200);
+            }}
+            sx={{
+              borderRadius: "12px",
+              textTransform: "none",
+              fontSize: "16px",
+              fontFamily: "SF Pro Display, Inter, sans-serif",
+              boxShadow: clicked === index ? "none" : "0px 4px 10px rgba(0, 0, 0, 0.1)",
+              transition: "all 0.2s ease-in-out",
+              transform: clicked === index ? "scale(0.95)" : "scale(1)",
+              "&:hover": {
+                boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.2)"
+              }
+            }}
+          >
+              {btn.label}
+            </Button>
+          ))}
         </Box>
       </Box>
       {macbooks.map((macbook) => {

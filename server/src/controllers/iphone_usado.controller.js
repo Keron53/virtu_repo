@@ -38,49 +38,6 @@ const getIPhoneUsed = async (req, res, next) => {
     }
 }
 
-const getIPhoneUsedByModel = async (req, res, next) => {
-    try {
-        const { id_modelo } = req.params;
-        const result = await pool.query("SELECT * FROM IPhone_Usado WHERE id_modelo = $1 ORDER BY id_iphone_usado DESC", [id_modelo]);
-
-        if (result.rows.length === 0)
-            return res.status(404).json({ message: "No used iPhones found with the specified model ID" });
-
-        res.json(result.rows);
-    } catch (error) {
-        next(error);
-    }
-}
-
-const getIPhoneUsedByIMEI = async (req, res, next) => {
-    try {
-        const { imei } = req.params;
-        const result = await pool.query("SELECT * FROM IPhone_Usado WHERE imei = $1", [imei]);
-
-        if (result.rows.length === 0)
-            return res.status(404).json({ message: "No used iPhone found with the specified IMEI" });
-
-        res.json(result.rows[0]);
-    } catch (error) {
-        next(error);
-    }
-}
-
-const getIPhoneUsedByColor = async (req, res, next) => {
-    try {
-        const { color } = req.params;
-        const result = await pool.query("SELECT * FROM IPhone_Usado WHERE color ILIKE $1 ORDER BY id_iphone_usado DESC", [`%${color}%`]);
-
-        if (result.rows.length === 0)
-            return res.status(404).json({ message: "No used iPhones found with the specified color" });
-
-        res.json(result.rows);
-    } catch (error) {
-        next(error);
-    }
-}
-
-
 const getIPhoneUsedNotSold = async (req, res, next) => {
     try {
         const result = await pool.query("SELECT * FROM IPhone_Usado WHERE vendido = false ORDER BY id_iphone_usado DESC");
@@ -136,9 +93,6 @@ module.exports = {
     createIPhoneUsed,
     getAllIPhoneUsed,
     getIPhoneUsed,
-    getIPhoneUsedByModel,
-    getIPhoneUsedByIMEI,
-    getIPhoneUsedByColor,
     getIPhoneUsedNotSold,
     getIPhoneUsedSold,
     updateIPhoneUsed,

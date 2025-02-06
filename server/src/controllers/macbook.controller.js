@@ -38,48 +38,6 @@ const getMacBook = async (req, res, next) => {
     }
 }
 
-const getMacBookByModel = async (req, res, next) => {
-    try {
-        const { id_modelo } = req.params;
-        const result = await pool.query("SELECT * FROM MacBook WHERE id_modelo = $1 ORDER BY id_macbook DESC", [id_modelo]);
-
-        if (result.rows.length === 0)
-            return res.status(404).json({ message: "No MacBooks found with the specified model ID" });
-
-        res.json(result.rows);
-    } catch (error) {
-        next(error);
-    }
-}
-
-const getMacBookBySerial = async (req, res, next) => {
-    try {
-        const { serial_num } = req.params;
-        const result = await pool.query("SELECT * FROM MacBook WHERE serial_num = $1", [serial_num]);
-
-        if (result.rows.length === 0)
-            return res.status(404).json({ message: "No MacBook found with the specified serial number" });
-
-        res.json(result.rows[0]);
-    } catch (error) {
-        next(error);
-    }
-}
-
-const getMacBookByColor = async (req, res, next) => {
-    try {
-        const { color } = req.params;
-        const result = await pool.query("SELECT * FROM MacBook WHERE color ILIKE $1 ORDER BY id_macbook DESC", [`%${color}%`]);
-
-        if (result.rows.length === 0)
-            return res.status(404).json({ message: "No MacBooks found with the specified color" });
-
-        res.json(result.rows);
-    } catch (error) {
-        next(error);
-    }
-}
-
 const getMacBookNotSold = async (req, res, next) => {
     try {
         const result = await pool.query("SELECT * FROM MacBook WHERE vendido = false ORDER BY id_macbook DESC");
@@ -137,9 +95,6 @@ module.exports = {
     createMacBook,
     getAllMacBooks,
     getMacBook,
-    getMacBookByModel,
-    getMacBookBySerial,
-    getMacBookByColor,
     getMacBookNotSold,
     getMacBookSold,
     updateMacBook,

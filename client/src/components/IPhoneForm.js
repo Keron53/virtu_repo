@@ -13,7 +13,7 @@ export default function IPhoneForm() {
     vendido: false,
     sellado: false,
     fecha_llegada: new Date().toISOString().split("T")[0],
-    fecha_salida: new Date().toISOString().split("T")[0],
+    fecha_salida: null,
   });
 
   const [modelos, setModelos] = useState([]);
@@ -21,13 +21,12 @@ export default function IPhoneForm() {
   const navigate = useNavigate();
   const params = useParams();
 
-  // Función para obtener el token del localStorage
   const getToken = () => localStorage.getItem("token");
 
   const loadModelos = async () => {
     const response = await fetch("http://localhost:4000/modelo/get", {
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     if (response.ok) {
@@ -45,7 +44,7 @@ export default function IPhoneForm() {
         method: "PUT",
         headers: { 
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+          "Authorization": `Bearer ${getToken()}`
         },
         body: JSON.stringify(iphone),
       });
@@ -54,7 +53,7 @@ export default function IPhoneForm() {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+          "Authorization": `Bearer ${getToken()}`
         },
         body: JSON.stringify(iphone),
       });
@@ -73,7 +72,7 @@ export default function IPhoneForm() {
   const loadIphone = async (id) => {
     const res = await fetch("http://localhost:4000/iphone/get/" + id, {
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     if (res.ok) {
@@ -87,13 +86,14 @@ export default function IPhoneForm() {
         vendido: data.vendido,
         sellado: data.sellado,
         fecha_llegada: data.fecha_llegada ? new Date(data.fecha_llegada).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
-        fecha_salida: data.fecha_salida ? new Date(data.fecha_salida).toISOString().split("T")[0] : new Date().toISOString().split("T")[0], // Cargar fecha_salida si existe
+        fecha_salida: data.fecha_salida ? new Date(data.fecha_salida).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
       });
       setEditing(true);
     } else {
       console.error("Error al cargar iPhone:", res.statusText);
     }
   };
+  
   
   useEffect(() => {
     loadModelos();

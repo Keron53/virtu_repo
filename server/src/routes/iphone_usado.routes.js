@@ -3,9 +3,6 @@ const {
     createIPhoneUsed, 
     getAllIPhoneUsed, 
     getIPhoneUsed, 
-    getIPhoneUsedByModel,
-    getIPhoneUsedByIMEI,
-    getIPhoneUsedByColor,
     getIPhoneUsedNotSold,
     getIPhoneUsedSold,
     updateIPhoneUsed, 
@@ -23,18 +20,12 @@ router.get('/iphoneused/get', verifyToken, checkRole(['admin', 'operador']), get
 
 router.get('/iphoneused/get/:id_iphone_usado', verifyToken, checkRole(['admin', 'operador']), getIPhoneUsed);
 
-router.get('/iphoneused/model/:id_modelo', verifyToken, checkRole(['admin', 'operador']), getIPhoneUsedByModel);
-
-router.get('/iphoneused/imei/:imei', verifyToken, checkRole(['admin', 'operador']), getIPhoneUsedByIMEI);
-
-router.get('/iphoneused/color/:color', verifyToken, checkRole(['admin', 'operador']), getIPhoneUsedByColor);
-
 router.get('/iphoneused/sold', verifyToken, checkRole(['admin', 'operador']), getIPhoneUsedSold);
 
 router.get('/iphoneused/notsold', verifyToken, checkRole(['admin', 'operador']), getIPhoneUsedNotSold);
 
-router.put('/iphoneused/put/:id_iphone_usado', verifyToken, checkRole(['admin']), updateIPhoneUsed);
+router.put('/iphoneused/put/:id_iphone_usado', verifyToken, checkRole(['admin', 'operador']), updateIPhoneUsed);
 
-router.delete('/iphoneused/delete/:id_iphone_usado', verifyToken, checkRole(['admin']), deleteIPhoneUsed);
+router.delete('/iphoneused/delete/:id_iphone_usado', verifyToken, checkRole(['admin', 'operador']), deleteIPhoneUsed);
 
 module.exports = router;

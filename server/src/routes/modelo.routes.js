@@ -3,7 +3,6 @@ const {
     createModel, 
     getAllModels, 
     getModel, 
-    getModelByNombre,
     updateModel, 
     deleteModel 
 } = require('../controllers/modelo.controller');
@@ -19,7 +18,6 @@ router.get('/modelo/get', verifyToken, checkRole(['admin', 'operador']), getAllM
 
 router.get('/modelo/get/:id_modelo', verifyToken, checkRole(['admin', 'operador']), getModel);
 
-router.get('/modelo/get/nombre/:nombre_modelo', verifyToken, checkRole(['admin', 'operador']), getModelByNombre);
 
 router.put('/modelo/put/:id_modelo', verifyToken, checkRole(['admin']), updateModel);
 

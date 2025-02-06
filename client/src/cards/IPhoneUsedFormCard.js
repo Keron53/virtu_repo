@@ -37,7 +37,8 @@ import {
                 value={iphoneUsed.id_modelo}
                 onChange={handleChange}
               >
-                {modelos.map((modelo) => (
+                {modelos.filter((modelo) => modelo.nombre_modelo.startsWith("IPHONE"))
+                .map((modelo) => (
                   <MenuItem key={modelo.id_modelo} value={modelo.id_modelo}>
                     {modelo.nombre_modelo}
                   </MenuItem>

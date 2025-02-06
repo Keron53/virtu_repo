@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Card, CardContent, TextField, Typography } from "@mui/material";
+import { 
+  Box, 
+  Button, 
+  Card, 
+  CardContent, 
+  TextField, 
+  Typography 
+} from "@mui/material";
 
 export default function AllItems() {
   const [items, setItems] = useState([]);
@@ -32,10 +39,8 @@ export default function AllItems() {
   };
 
   const sendEmail = () => {
-    // Crear el cuerpo del correo
     const emailBody = `
       Aquí están los dispositivos solicitados:
-
       ${items.map((item) => `
         Tipo de Dispositivo: ${item.tipo_dispositivo || "Desconocido"}
         Modelo: ${item.modelo || "Desconocido"}
@@ -44,10 +49,7 @@ export default function AllItems() {
       `).join("\n")}
     `;
 
-    // Utilizar el protocolo mailto para abrir el cliente de correo del usuario
     const mailtoLink = `mailto:${email}?subject=Datos%20de%20Dispositivos&body=${encodeURIComponent(emailBody)}`;
-
-    // Abrir el cliente de correo predeterminado del usuario
     window.location.href = mailtoLink;
 
     setSuccessMessage("Los datos se han enviado al correo.");
@@ -59,52 +61,73 @@ export default function AllItems() {
   }, []);
 
   return (
-    <Box>
-      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Typography variant="h4">Todos los Dispositivos</Typography>
-        <Button variant="contained" onClick={fetchAllItems}>
-          Recargar
+    <Box sx={{ p: 3, maxWidth: "800px", mx: "auto", bgcolor: "#f4f6f8", borderRadius: 2 }}>
+      {/* Title and Reload Button */}
+      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#1976d2" }}>
+          📱 Todos los Dispositivos
+        </Typography>
+        <Button 
+          variant="contained" 
+          onClick={fetchAllItems} 
+          sx={{ bgcolor: "#1976d2", "&:hover": { bgcolor: "#115293" } }}
+        >
+          Recargar 🔄
         </Button>
       </Box>
 
+      {/* Email Input and Send Button */}
       <Box display="flex" alignItems="center" sx={{ mb: 3 }}>
         <TextField
           label="Correo"
           variant="outlined"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          sx={{ mr: 2, flex: 1 }}
+          sx={{ flex: 1, mr: 2 }}
         />
-        <Button variant="contained" onClick={sendEmail}>
-          Enviar por correo
+        <Button 
+          variant="contained" 
+          onClick={sendEmail} 
+          sx={{ bgcolor: "#28a745", "&:hover": { bgcolor: "#218838" } }}
+        >
+          ✉️ Enviar
         </Button>
       </Box>
 
+      {/* Error Message */}
       {error && (
-        <Typography color="error" sx={{ mb: 2 }}>
-          {error}
+        <Typography color="error" sx={{ mb: 2, fontWeight: "bold" }}>
+          ❌ {error}
         </Typography>
       )}
 
+      {/* Success Message */}
       {successMessage && (
-        <Typography color="success.main" sx={{ mb: 2 }}>
-          {successMessage}
+        <Typography sx={{ mb: 2, fontWeight: "bold", color: "green" }}>
+          ✅ {successMessage}
         </Typography>
       )}
 
+      {/* Device Cards */}
       {items.length === 0 && !error ? (
-        <Typography>No hay registros para mostrar.</Typography>
+        <Typography sx={{ fontStyle: "italic", color: "#757575" }}>
+          No hay registros para mostrar.
+        </Typography>
       ) : (
         items.map((item, index) => (
-          <Card key={index} sx={{ mb: 2 }}>
+          <Card key={index} sx={{ mb: 2, p: 2, borderRadius: 2, boxShadow: 3 }}>
             <CardContent>
-              <Typography variant="h6">
-                Tipo de Dispositivo: {item.tipo_dispositivo || "Desconocido"}
+              <Typography variant="h6" sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                {item.tipo_dispositivo || "Desconocido"}
               </Typography>
-              <Typography>Modelo: {item.modelo || "Desconocido"}</Typography>
-              <Typography>Vendido: {item.vendido ? "Sí" : "No"}</Typography>
               <Typography>
-                Identificador: {item.identificador || "N/A"}
+                📌 Modelo: <strong>{item.modelo || "Desconocido"}</strong>
+              </Typography>
+              <Typography>
+                ✅ Vendido: <strong>{item.vendido ? "Sí" : "No"}</strong>
+              </Typography>
+              <Typography>
+                🔢 Identificador: <strong>{item.identificador || "N/A"}</strong>
               </Typography>
             </CardContent>
           </Card>

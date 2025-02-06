@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import IPadListCard from "../cards/IPadListCard";
 
@@ -18,13 +18,12 @@ export default function IPadList() {
   const [modelos, setModelos] = useState([]);
   const navigate = useNavigate();
 
-  // Función para obtener el token del localStorage
   const getToken = () => localStorage.getItem("token");
 
   const loadIpads = async (filter) => {
     const response = await fetch(`http://localhost:4000/ipad/${filter}`, {
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     if (response.ok) {
@@ -38,7 +37,7 @@ export default function IPadList() {
   const loadModelos = async () => {
     const response = await fetch("http://localhost:4000/modelo/get", {
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     if (response.ok) {
@@ -53,7 +52,7 @@ export default function IPadList() {
     await fetch(`http://localhost:4000/ipad/delete/${id}`, { 
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     setIpads(ipads.filter((ipad) => ipad.id_ipad !== id));
@@ -72,7 +71,7 @@ export default function IPadList() {
       method: "PUT",
       headers: { 
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       },
       body: JSON.stringify(updatedIpad),
     });
@@ -87,21 +86,52 @@ export default function IPadList() {
 
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <h1>Lista de iPads</h1>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{
+          mb: 2,
+          p: 2,
+          borderRadius: "16px",
+          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease-in-out",
+        }}
+      >
+      <h1 style={{ fontFamily: "SF Pro Display, Inter, sans-serif", fontSize: "24px" }}>
+        Lista de IPads
+      </h1>
         <Box display="flex" gap={1}>
-          <Button variant="contained" color="success" onClick={() => navigate("/ipad/new")}>
-            Agregar iPad
-          </Button>
-          <Button variant="contained" onClick={() => loadIpads("sold")}>
-            Vendidos
-          </Button>
-          <Button variant="contained" onClick={() => loadIpads("notsold")}>
-            No vendidos
-          </Button>
-          <Button variant="contained" onClick={() => loadIpads("get")}>
-            Todos los equipos
-          </Button>
+          {[
+            { label: "Agregar iPad", color: "success", action: () => navigate("/ipad/new") },
+            { label: "Vendidos", color: "primary", action: () => loadIpads("sold") },
+            { label: "No vendidos", color: "primary", action: () => loadIpads("notsold") },
+            { label: "Todos los equipos", color: "secondary", action: () => loadIpads("get") }
+          ].map((btn, index) => (
+            <Button
+              key={index}
+              variant="contained"
+              color={btn.color}
+              onClick={btn.action}
+              sx={{
+                borderRadius: "12px",
+                textTransform: "none",
+                fontSize: "16px",
+                fontFamily: "SF Pro Display, Inter, sans-serif",
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  background: "rgba(255, 255, 255, 0.6)",
+                  boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.2)",
+                },
+                "&:active": {
+                  transform: "scale(0.95)",
+                },
+              }}
+            >
+              {btn.label}
+            </Button>
+          ))}
         </Box>
       </Box>
       {ipads.map((ipad) => {

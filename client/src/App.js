@@ -30,7 +30,6 @@ function AppRoutes() {
       <Route path="/login" element={!user ? <Login /> : <Navigate to="/iphone" />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
-      {/* Rutas protegidas con roles */}
       <Route
         path="/modelo"
         element={
@@ -74,7 +73,7 @@ function AppRoutes() {
       <Route
         path="/iphone/new"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <IPhoneForm />
           </ProtectedRoute>
         }
@@ -82,7 +81,7 @@ function AppRoutes() {
       <Route
         path="/iphone/:id_iphone/edit"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <IPhoneForm />
           </ProtectedRoute>
         }
@@ -98,7 +97,7 @@ function AppRoutes() {
       <Route
         path="/iphoneused/new"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <IPhoneUsedForm />
           </ProtectedRoute>
         }
@@ -106,7 +105,7 @@ function AppRoutes() {
       <Route
         path="/iphoneused/:id_iphone_usado/edit"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <IPhoneUsedForm />
           </ProtectedRoute>
         }
@@ -122,7 +121,7 @@ function AppRoutes() {
       <Route
         path="/ipad/new"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <IPadForm />
           </ProtectedRoute>
         }
@@ -130,7 +129,7 @@ function AppRoutes() {
       <Route
         path="/ipad/:id_ipad/edit"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <IPadForm />
           </ProtectedRoute>
         }
@@ -146,7 +145,7 @@ function AppRoutes() {
       <Route
         path="/applewatch/new"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <ApplewatchForm />
           </ProtectedRoute>
         }
@@ -154,7 +153,7 @@ function AppRoutes() {
       <Route
         path="/applewatch/:id_applewatch/edit"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <ApplewatchForm />
           </ProtectedRoute>
         }
@@ -170,7 +169,7 @@ function AppRoutes() {
       <Route
         path="/macbook/new"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <MacbookForm />
           </ProtectedRoute>
         }
@@ -178,7 +177,7 @@ function AppRoutes() {
       <Route
         path="/macbook/:id_macbook/edit"
         element={
-          <ProtectedRoute user={user} roleRequired="admin">
+          <ProtectedRoute user={user}>
             <MacbookForm />
           </ProtectedRoute>
         }

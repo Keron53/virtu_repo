@@ -18,7 +18,6 @@ export default function ModeloForm() {
   const navigate = useNavigate();
   const params = useParams();
 
-  // Función para obtener el token del localStorage
   const getToken = () => localStorage.getItem("token");
 
   const handleSubmit = async (e) => {
@@ -29,7 +28,7 @@ export default function ModeloForm() {
         method: "PUT",
         headers: { 
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+          "Authorization": `Bearer ${getToken()}`
         },
         body: JSON.stringify(modelo),
       });
@@ -38,7 +37,7 @@ export default function ModeloForm() {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+          "Authorization": `Bearer ${getToken()}`
         },
         body: JSON.stringify(modelo),
       });
@@ -53,7 +52,7 @@ export default function ModeloForm() {
   const loadModelo = async (id) => {
     const res = await fetch("http://localhost:4000/modelo/get/" + id, {
       headers: {
-        "Authorization": `Bearer ${getToken()}` // Agregar el token aquí
+        "Authorization": `Bearer ${getToken()}`
       }
     });
     if (res.ok) {

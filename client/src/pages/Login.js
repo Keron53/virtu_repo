@@ -8,7 +8,10 @@ import {
   TextField,
   Button,
   Alert,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
+import { AccountCircle, Visibility, VisibilityOff, Lock } from "@mui/icons-material";
 
 export default function Login() {
   const { user, login } = useAuth();
@@ -16,18 +19,18 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  // Si el usuario ya está autenticado, redirigir a la página principal
   if (user) {
     navigate("/iphone");
-    return null; // Retorna vacío mientras se redirige
+    return null;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const success = await login(username, password);
     if (success) {
-      navigate("/iphone"); // Redirige a la página principal tras iniciar sesión
+      navigate("/iphone");
     } else {
       setError("Usuario o contraseña incorrectos.");
     }
@@ -42,15 +45,16 @@ export default function Login() {
           flexDirection: "column",
           alignItems: "center",
           boxShadow: 3,
-          borderRadius: 2,
+          borderRadius: 3,
           p: 4,
+          backgroundColor: "#fff",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" sx={{ fontWeight: "bold" }}>
           Iniciar Sesión
         </Typography>
         {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2 }}>
           <TextField
             margin="normal"
             required
@@ -62,6 +66,13 @@ export default function Login() {
             autoFocus
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircle />
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             margin="normal"
@@ -69,18 +80,37 @@ export default function Login() {
             fullWidth
             name="password"
             label="Contraseña"
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Lock />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              mb: 2,
+              backgroundColor: "#000",
+              color: "#fff",
+              "&:hover": { backgroundColor: "#333" },
+            }}
           >
             Iniciar Sesión
           </Button>

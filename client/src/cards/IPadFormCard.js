@@ -42,7 +42,8 @@ export default function IPadFormCard({
               value={ipad.id_modelo}
               onChange={handleChange}
             >
-              {modelos.map((modelo) => (
+              {modelos.filter((modelo) => modelo.nombre_modelo.startsWith("IPAD"))
+              .map((modelo) => (
                 <MenuItem key={modelo.id_modelo} value={modelo.id_modelo}>
                   {modelo.nombre_modelo}
                 </MenuItem>
@@ -91,7 +92,7 @@ export default function IPadFormCard({
               Selecciona un tipo
             </option>
             <MenuItem value="OB">OB</MenuItem>
-            <MenuItem value="USADO">USADO</MenuItem>
+            <MenuItem value="USED">USED</MenuItem>
             <MenuItem value="NEW">NEW</MenuItem>
           </Select>
           <TextField

@@ -3,9 +3,6 @@ const {
     createAppleWatch, 
     getAllAppleWatches, 
     getAppleWatch,
-    getAppleWatchByModel,
-    getAppleWatchBySerial,
-    getAppleWatchByColor,
     getAppleWatchesNotSold,
     getAppleWatchesSold,
     updateAppleWatch, 
@@ -23,18 +20,12 @@ router.get('/applewatch/get', verifyToken, checkRole(['admin', 'operador']), get
 
 router.get('/applewatch/get/:id_applewatch', verifyToken, checkRole(['admin', 'operador']), getAppleWatch);
 
-router.get('/applewatch/model/:id_modelo', verifyToken, checkRole(['admin', 'operador']), getAppleWatchByModel);
-
-router.get('/applewatch/serial/:serial_num', verifyToken, checkRole(['admin', 'operador']), getAppleWatchBySerial);
-
-router.get('/applewatch/color/:color', verifyToken, checkRole(['admin', 'operador']), getAppleWatchByColor);
-
 router.get('/applewatch/notsold', verifyToken, checkRole(['admin', 'operador']), getAppleWatchesNotSold);
 
 router.get('/applewatch/sold', verifyToken, checkRole(['admin', 'operador']), getAppleWatchesSold);
 
-router.put('/applewatch/put/:id_applewatch', verifyToken, checkRole(['admin']), updateAppleWatch);
+router.put('/applewatch/put/:id_applewatch', verifyToken, checkRole(['admin', 'operador']), updateAppleWatch);
 
-router.delete('/applewatch/delete/:id_applewatch', verifyToken, checkRole(['admin']), deleteAppleWatch);
+router.delete('/applewatch/delete/:id_applewatch', verifyToken, checkRole(['admin', 'operador']), deleteAppleWatch);
 
 module.exports = router;
